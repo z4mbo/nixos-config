@@ -839,11 +839,11 @@
     layer = "overlay";
     control-center-layer = "top";
     layer-shell = true;
-    cssPriority = "application";
-    control-center-margin-top = 10;
+    cssPriority = "user";
+    control-center-margin-top = 46;
     control-center-margin-bottom = 10;
     control-center-margin-right = 10;
-    control-center-margin-left = 10;
+    control-center-margin-left = 0;
     notification-2fa-action = true;
     notification-inline-replies = false;
     notification-icon-size = 48;
@@ -852,7 +852,7 @@
     timeout = 5;
     timeout-low = 3;
     timeout-critical = 0;
-    fit-to-screen = true;
+    fit-to-screen = false;
     control-center-width = 400;
     control-center-height = 600;
     notification-window-width = 400;
@@ -865,17 +865,11 @@
     scripts = {};
     notification-visibility = {};
     widgets = [
-      "inhibitors"
       "title"
       "dnd"
       "notifications"
     ];
     widget-config = {
-      inhibitors = {
-        text = "Inhibitors";
-        button-text = "Clear All";
-        clear-all-button = true;
-      };
       title = {
         text = "Notifications";
         clear-all-button = true;
@@ -891,8 +885,18 @@
     * {
       font-family: "JetBrainsMono Nerd Font";
       font-size: 14px;
-      background: transparent;
       color: #ffffff;
+    }
+
+    window,
+    window.blank-window,
+    window.notification-window,
+    window.control-center {
+      background: transparent;
+    }
+
+    box.notifications {
+      background: transparent;
     }
 
     .notification-row {
@@ -905,12 +909,16 @@
       background: transparent;
     }
 
-    .notification {
+    .notification-row .notification-background {
+      background: transparent;
+    }
+
+    .notification-row .notification-background .notification {
+      background: #000000;
       border-radius: 12px;
-      margin: 6px;
+      margin: 6px 12px;
       box-shadow: none;
       padding: 0;
-      background: #000000;
       border: 2px solid #5277C3;
     }
 
@@ -1034,7 +1042,6 @@
       background: #000000;
       border: 2px solid #5277C3;
       border-radius: 12px;
-      margin-top: 46px;
     }
 
     .control-center-list {
@@ -1047,27 +1054,10 @@
     }
 
     .blank-window {
-      background: alpha(black, 0.5);
+      background: transparent;
     }
 
     .floating-notifications {
-      background: transparent;
-    }
-
-    .floating-notifications .notification-row {
-      background: transparent;
-    }
-
-    /* Fix for floating notification popup - prevent black box */
-    .floating-notifications.background {
-      background: transparent;
-    }
-
-    .floating-notifications.background .notification-row {
-      background: transparent;
-    }
-
-    .floating-notifications.background .notification-row .notification-background {
       background: transparent;
     }
 

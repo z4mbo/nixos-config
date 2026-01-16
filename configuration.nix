@@ -184,6 +184,10 @@
     };
   };
 
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+  ];
+
   environment.systemPackages = with pkgs; [
     # Editors
     vim
@@ -229,7 +233,6 @@
     rofi
     waybar
     nautilus
-    nerd-fonts.jetbrains-mono
     swaynotificationcenter
     (bottles.override { removeWarningPopup = true; })
 
