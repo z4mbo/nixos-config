@@ -55,11 +55,11 @@
       }
 
       .modules-left {
-          margin-left: 16px;
+          margin-left: 8px;
       }
 
       .modules-right {
-          margin-right: 16px;
+          margin-right: 8px;
       }
 
       #workspaces {
@@ -348,10 +348,10 @@
         center-focused-column "never"
 
         struts {
-            left 16
-            right 16
-            top 16
-            bottom 16
+            left 8
+            right 8
+            top 8
+            bottom 8
         }
 
         preset-column-widths {
@@ -394,6 +394,7 @@
         Mod+Space { spawn "rofi" "-show" "drun" "-show-icons"; }
         Mod+E { spawn "nautilus"; }
         Mod+Q { close-window; }
+        Mod+W { toggle-window-floating; }
 
         Mod+Left  { focus-column-left; }
         Mod+Down  { focus-window-down; }
