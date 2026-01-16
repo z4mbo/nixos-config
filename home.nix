@@ -344,14 +344,14 @@
     }
 
     layout {
-        gaps 16
+        gaps 8
         center-focused-column "never"
 
         struts {
-            left 8
-            right 8
-            top 8
-            bottom 8
+            left 4
+            right 4
+            top 4
+            bottom 4
         }
 
         preset-column-widths {
