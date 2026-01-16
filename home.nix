@@ -55,11 +55,11 @@
       }
 
       .modules-left {
-          margin-left: 8px;
+          margin-left: 4px;
       }
 
       .modules-right {
-          margin-right: 8px;
+          margin-right: 4px;
       }
 
       #workspaces {
