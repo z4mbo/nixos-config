@@ -5,39 +5,6 @@
   home.homeDirectory = "/home/z4mbo";
   home.stateVersion = "25.11";
 
-  # User packages
-  home.packages = with pkgs; [
-    # Browser
-    google-chrome
-
-    # Creative apps
-    blender
-    godot_4
-
-    # Terminal & UI
-    ghostty
-    rofi
-    waybar
-    nautilus
-    nerd-fonts.jetbrains-mono
-    swaynotificationcenter
-
-    # Gaming launcher
-    (bottles.override { removeWarningPopup = true; })  # Battle.net & Windows apps
-
-    # Dev tools
-    ripgrep
-    fd
-    unzip
-    gcc
-    nodejs
-    curl
-
-    # Music
-    spotify
-    spicetify-cli
-  ];
-
   # Waybar systemd service
   systemd.user.services.waybar = {
     Unit = {
@@ -306,6 +273,7 @@
         name = "Alessandro Zambon";
         email = "alessandrozambon1997@gmail.com";
       };
+      safe.directory = "/etc/nixos";
     };
   };
 

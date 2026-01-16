@@ -222,6 +222,31 @@
     antigravity
     genact
     cmatrix
+
+    # Apps
+    google-chrome
+    ghostty
+    rofi
+    waybar
+    nautilus
+    nerd-fonts.jetbrains-mono
+    swaynotificationcenter
+    (bottles.override { removeWarningPopup = true; })
+
+    # Dev tools
+    ripgrep
+    fd
+    unzip
+    gcc
+    nodejs
+    curl
+
+    # Music
+    spotify
+
+    # Creative
+    blender
+    godot_4
   ];
 
   xdg.portal = {
