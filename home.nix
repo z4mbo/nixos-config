@@ -59,7 +59,7 @@
       }
 
       .modules-right {
-          margin-right: 12px;
+          margin-right: 16px;
       }
 
       #workspaces {
@@ -346,6 +346,13 @@
     layout {
         gaps 16
         center-focused-column "never"
+
+        struts {
+            left 16
+            right 16
+            top 16
+            bottom 16
+        }
 
         preset-column-widths {
             proportion 0.25

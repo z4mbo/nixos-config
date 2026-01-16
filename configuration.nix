@@ -61,7 +61,12 @@
   };
 
   programs.niri.enable = true;
-  services.displayManager.ly.enable = true;
+  services.displayManager.ly = {
+    enable = true;
+    settings = {
+      session_log = "/dev/null";
+    };
+  };
 
   # Steam with proper gaming support
   programs.steam = {
