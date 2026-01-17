@@ -24,15 +24,8 @@
       window#waybar {
           background: #000000;
           color: #ffffff;
-          border-radius: 8px;
-      }
-
-      .modules-left {
-          margin-left: 8px;
-      }
-
-      .modules-right {
-          margin-right: 8px;
+          padding-left: 8px;
+          padding-right: 8px;
       }
 
       #workspaces {
@@ -321,14 +314,14 @@
     }
 
     layout {
-        gaps 4
+        gaps 8
         center-focused-column "always"
 
         struts {
-            left 4
-            right 4
-            top 4
-            bottom 4
+            left 8
+            right 8
+            top 8
+            bottom 8
         }
 
         preset-column-widths {
@@ -347,7 +340,7 @@
             proportion 1.0
         }
 
-        default-column-width { proportion 1.0; }
+        default-column-width { proportion 0.5; }
 
         border {
             width 1
