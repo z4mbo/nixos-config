@@ -315,7 +315,7 @@
 
     layout {
         gaps 8
-        center-focused-column "always"
+        center-focused-column "never"
 
         struts {
             left 8
