@@ -5,35 +5,8 @@
   home.homeDirectory = "/home/z4mbo";
   home.stateVersion = "25.11";
 
-  # Waybar systemd service
-  systemd.user.services.waybar = {
-    Unit = {
-      Description = "Waybar as a systemd service";
-      PartOf = [ "graphical-session.target" ];
-    };
-    Service = {
-      ExecStart = "${pkgs.waybar}/bin/waybar";
-      Restart = "always";
-    };
-    Install = {
-      WantedBy = [ "niri.service" ];
-    };
-  };
-
-  # Notification daemon (swaync)
-  systemd.user.services.swaync = {
-    Unit = {
-      Description = "Sway Notification Center";
-      PartOf = [ "graphical-session.target" ];
-    };
-    Service = {
-      ExecStart = "${pkgs.swaynotificationcenter}/bin/swaync";
-      Restart = "always";
-    };
-    Install = {
-      WantedBy = [ "niri.service" ];
-    };
-  };
+  # Removed systemd services for waybar and swaync
+  # They are now started via niri's spawn-at-startup for better timing
 
   programs.waybar = {
     enable = true;
@@ -51,15 +24,15 @@
       window#waybar {
           background: #000000;
           color: #ffffff;
-          border-radius: 12px;
+          border-radius: 8px;
       }
 
       .modules-left {
-          margin-left: 4px;
+          margin-left: 8px;
       }
 
       .modules-right {
-          margin-right: 4px;
+          margin-right: 8px;
       }
 
       #workspaces {
@@ -70,16 +43,23 @@
           padding: 0 12px;
           color: #ffffff;
           background: transparent;
+          transition: all 0.2s ease-in-out;
       }
 
       #workspaces button:first-child {
           padding-left: 0;
       }
 
-      #workspaces button.focused,
       #workspaces button.active {
           color: #5277C3;
           background: transparent;
+          font-weight: bold;
+      }
+
+      #workspaces button.focused {
+          color: #5277C3;
+          background: transparent;
+          font-weight: bold;
       }
 
       #window,
@@ -123,9 +103,6 @@
           padding-right: 8px;
       }
 
-      #clock {
-          font-weight: bold;
-      }
 
       tooltip {
           background: #1a1a1a;
@@ -141,10 +118,10 @@
       mainBar = {
         layer = "top";
         position = "top";
-        height = 30;
+        height = 40;
         modules-left = [ "niri/workspaces" "niri/window" ];
         modules-center = [ "clock" ];
-        modules-right = [ "tray" "cpu" "custom/gpu" "memory" "disk" "pulseaudio" "custom/notification" "custom/power" ];
+        modules-right = [ "cpu" "custom/gpu" "memory" "disk" "pulseaudio" "custom/notification" "custom/power" ];
 
         "niri/workspaces" = {
           format = "{icon}";
@@ -170,7 +147,7 @@
         };
 
         "clock" = {
-          "format" = "{:%e %B %Y - %H:%M}";
+          "format" = "{:%A %e %B %Y - %H:%M}";
           "tooltip-format" = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
           "on-click" = "google-chrome-stable --app=https://calendar.google.com";
         };
@@ -339,13 +316,13 @@
     workspace "9"
 
     window-rule {
-        geometry-corner-radius 12
+        geometry-corner-radius 8
         clip-to-geometry true
     }
 
     layout {
-        gaps 8
-        center-focused-column "never"
+        gaps 4
+        center-focused-column "always"
 
         struts {
             left 4
@@ -370,7 +347,7 @@
             proportion 1.0
         }
 
-        default-column-width { proportion 0.25; }
+        default-column-width { proportion 1.0; }
 
         border {
             width 1
@@ -379,15 +356,15 @@
         }
 
         focus-ring {
-            width 1
-            active-color "#5277C3"
-            inactive-color "#333333"
+            off
         }
     }
 
     prefer-no-csd
 
     spawn-at-startup "swaybg" "-c" "#000000"
+    spawn-at-startup "waybar"
+    spawn-at-startup "swaync"
 
     binds {
         Mod+Return { spawn "ghostty"; }
@@ -469,7 +446,7 @@
         modi: "drun,run";
         show-icons: true;
         icon-theme: "Adwaita";
-        font: "JetBrainsMono Nerd Font 14";
+        font: "JetBrainsMono Nerd Font 16";
         drun-display-format: "{name}";
         drun-match-fields: "name,generic,keywords";
     }
@@ -486,7 +463,7 @@
         background-color: @bg;
         border: 2px;
         border-color: @accent;
-        border-radius: 12px;
+                  border-radius: 8px;
         padding: 20px;
     }
 
@@ -557,6 +534,10 @@
     selection-background = 5277C3
     selection-foreground = 000000
     cursor-color = 5277C3
+    window-padding-x = 15
+    window-padding-y = 15
+    mouse-scroll-multiplier = 3
+    shell-integration = none
   '';
 
   # Hide unwanted apps from rofi
@@ -663,6 +644,15 @@
     Type=Application
     Categories=Office;Calendar;
   '';
+  home.file.".local/share/applications/figma.desktop".text = ''
+    [Desktop Entry]
+    Name=Figma
+    Comment=Figma Design Tool
+    Exec=google-chrome-stable --app=https://www.figma.com
+    Icon=${config.home.homeDirectory}/.local/share/icons/webapps/figma.png
+    Type=Application
+    Categories=Graphics;Design;
+  '';
 
   # Download webapp icons on activation
   home.activation.downloadWebappIcons = config.lib.dag.entryAfter ["writeBoundary"] ''
@@ -681,6 +671,7 @@
     download_icon "google-gemini" "google-gemini.png"
     download_icon "grok" "grok.png"
     download_icon "google-calendar" "google-calendar.png"
+    download_icon "figma" "figma.png"
   '';
 
   home.file.".local/bin/powermenu.sh" = {
@@ -892,7 +883,7 @@
   home.file.".config/swaync/style.css".text = ''
     * {
       font-family: "JetBrainsMono Nerd Font";
-      font-size: 14px;
+      font-size: 16px;
       color: #ffffff;
     }
 
@@ -923,7 +914,7 @@
 
     .notification-row .notification-background .notification {
       background: #000000;
-      border-radius: 12px;
+                border-radius: 8px;
       margin: 6px 12px;
       box-shadow: none;
       padding: 0;
@@ -933,7 +924,7 @@
     .notification-content {
       background: #000000;
       padding: 10px;
-      border-radius: 10px;
+      border-radius: 8px;
     }
 
     .close-button {
@@ -974,7 +965,7 @@
     }
 
     .notification-default-action {
-      border-radius: 10px;
+      border-radius: 8px;
       background: #000000;
     }
 
@@ -1049,7 +1040,7 @@
     .control-center {
       background: #000000;
       border: 2px solid #5277C3;
-      border-radius: 12px;
+                border-radius: 8px;
     }
 
     .control-center-list {

@@ -32,6 +32,9 @@
 
     kernelPackages = pkgs.linuxPackages_latest;
 
+    # Early KMS for NVIDIA
+    initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+
     # Better kernel parameters for gaming
     kernelParams = [
       "nvidia_drm.modeset=1"
@@ -39,10 +42,9 @@
     ];
   };
 
-  # Swap file for gaming (prevents OOM with large games)
   swapDevices = [{
     device = "/swapfile";
-    size = 16 * 1024; # 16GB
+    size = 8 * 1024; # 8GB
   }];
 
   hardware.graphics = {
@@ -55,57 +57,21 @@
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
-    open = true;
+    # CHANGED: Use open kernel modules (better for RTX 20xx+ and Wayland)
+    open = true; 
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.latest;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   programs.niri.enable = true;
-  services.displayManager.ly = {
-    enable = true;
-    settings = {
-      session_log = "/dev/null";
-    };
-  };
-
-  # Steam with proper gaming support
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    gamescopeSession.enable = true;
-    extraCompatPackages = with pkgs; [
-      proton-ge-bin
-    ];
-  };
-
-  # GameMode for optimized gaming performance
-  programs.gamemode = {
-    enable = true;
-    settings = {
-      general = {
-        renice = 10;
-      };
-      gpu = {
-        apply_gpu_optimisations = "accept-responsibility";
-        gpu_device = 0;
-      };
-    };
-  };
-
-  # Gamescope compositor for better game compatibility
-  programs.gamescope = {
-    enable = true;
-    capSysNice = true;
-  };
+  services.displayManager.ly.enable = true;
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
-    WLR_NO_HARDWARE_CURSORS = "1";
     LIBVA_DRIVER_NAME = "nvidia";
     GBM_BACKEND = "nvidia-drm";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-    WLR_RENDERER = "vulkan";
+    WGPU_BACKEND = "vulkan";
   };
 
   networking = {
@@ -214,10 +180,6 @@
     swaybg
     pwvucontrol
 
-    # Gaming tools
-    vulkan-tools
-    vulkan-loader
-
     # Networking
     networkmanagerapplet
 
@@ -228,18 +190,15 @@
 
     # Fun
     neofetch
-    antigravity
-    genact
-    cmatrix
 
     # Apps
     google-chrome
+    discord
     ghostty
     rofi
     waybar
     nautilus
     swaynotificationcenter
-    (bottles.override { removeWarningPopup = true; })
 
     # Dev tools
     ripgrep
@@ -251,10 +210,6 @@
 
     # Music
     spotify
-
-    # Creative
-    blender
-    godot_4
   ];
 
   xdg.portal = {
