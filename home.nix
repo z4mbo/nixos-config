@@ -317,12 +317,6 @@
         gaps 8
         center-focused-column "never"
 
-        struts {
-            left 8
-            right 8
-            top 8
-            bottom 8
-        }
 
         preset-column-widths {
             proportion 0.25
